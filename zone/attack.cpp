@@ -2691,13 +2691,8 @@ void Mob::AddToHateList(Mob* other, int32 hate, int32 damage, bool bFrenzy, bool
 					memcpy(&record.lockout, &lootLockoutItr->second, sizeof(LootLockout));
 					if (zone && zone->GetGuildID() != GUILD_NONE && zone->GetGuildID() != 1 && lootLockoutItr->second.HasLockout(Timer::GetTimeSeconds()))
 					{
-						// WORKAROUND: This HP check prevents a bug where you could be booted after a mob is already dead.
-						// I am unsure if this bug affected pets, but it's simple enough to cover for the possibility.
-						if(GetHP() > 0)
-						{
-							petowner->CastToClient()->Message(Chat::Red, "You were locked out of %s. Sending you out.", GetCleanName());
-							petowner->CastToClient()->BootFromGuildInstance(true);
-						}
+						petowner->CastToClient()->Message(Chat::Red, "You were locked out of %s. Sending you out.", GetCleanName());
+						petowner->CastToClient()->BootFromGuildInstance(true);
 					}
 				}
 				m_EngagedClientNames.emplace(petowner->GetCleanName(), record);
